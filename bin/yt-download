@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Get the clipboard contents using xclip
+text=$(xclip -selection clipboard -o)
+
+if [[ $text == *"playlist"* ]]; then
+    notify-send "Playlist Downloading" "Downloading playlist $text\n"
+
+    read -p "Enter the starting point for the download (1 for the beginning): " start_point
+
+    if [[ $start_point -gt 1 ]]; then
+        yt-dlp -f bestvideo+bestaudio --ignore-errors --playlist-start $start_point --yes-playlist -o '~/yt/%(playlist)s/%(autonumber)s %(title)s.%(ext)s' "$text"
+    else
+        yt-dlp -f bestvideo+bestaudio --ignore-errors --yes-playlist -o '~/yt/%(playlist)s/%(autonumber)s %(title)s.%(ext)s' "$text"
+    fi
+
+    notify-send "Playlist Downloaded" "Download of playlist $text completed."
+else
+    notify-send "Video Downloading" "Downloading $text\n"
+    yt-dlp -f bestvideo+bestaudio -o '~/yt/%(title)s.%(ext)s' "$text"
+    notify-send "Video Downloaded" "Download of $text completed."
+fi

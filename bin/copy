@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -t 0 ]; then
+    # No input is piped, expecting a file path
+    if [ $# -eq 0 ]; then
+        echo "Error: No file path given!"
+        echo "Usage: copy <file>"
+        exit 1
+    fi
+
+    if [ ! -f "$1" ]; then
+        echo "Error: File not found."
+        exit 1
+    fi
+
+    xclip -sel c < "$1" && echo "$1 File copied to clipboard."
+else
+    # Input is being piped, copy the entire input to clipboard
+    xclip -sel c && echo "output copied to clipboard."
+fi
+

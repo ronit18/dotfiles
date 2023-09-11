@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+## Copyright (C) 2020-2023 Aditya Shakya <adi1090x@gmail.com>
+##
+## Script for spotify for waybar
+
+player_status=$(playerctl status 2> /dev/null)
+
+case $BLOCK_BUTTON in
+	1) dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause;;
+	2) setsid -f "$TERMINAL" -e calcurse ;;
+
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+
+if [ "$player_status" = "Playing" ]; then
+    echo -e " $(playerctl metadata artist) - $(playerctl metadata title)\nPlaying: $(playerctl metadata artist) - $(playerctl metadata title)\nplaying"
+elif [ "$player_status" = "Paused" ]; then
+    echo -e " $(playerctl metadata artist) - $(playerctl metadata title)\nPaused: $(playerctl metadata artist) - $(playerctl metadata title)\npaused"
+else
+	echo -e " Spotify Offline!\nSpotify Offline.\noffline"
+fi

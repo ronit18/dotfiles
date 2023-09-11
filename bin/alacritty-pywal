@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Path to your wallpaper image
+# WALLPAPER_PATH="/path/to/wallpaper.jpg"
+
+# Path to your Alacritty configuration file
+ALACRITTY_CONFIG_PATH="$HOME/.config/alacritty/alacritty.yml"
+
+# Generate color scheme using Pywal
+# wal -i "$WALLPAPER_PATH"
+
+# Load color scheme from Pywal-generated file
+source "$HOME/.cache/wal/colors.sh"
+
+# Update Alacritty configuration with new color scheme
+sed -i "s/background: '.*'/background: '$color0'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/foreground: '.*'/foreground: '$color7'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color0: '.*'/color0: '$color0'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color1: '.*'/color1: '$color1'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color2: '.*'/color2: '$color2'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color3: '.*'/color3: '$color3'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color4: '.*'/color4: '$color4'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color5: '.*'/color5: '$color5'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color6: '.*'/color6: '$color6'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color7: '.*'/color7: '$color7'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color8: '.*'/color8: '$color8'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color9: '.*'/color9: '$color9'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color10: '.*'/color10: '$color10'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color11: '.*'/color11: '$color11'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color12: '.*'/color12: '$color12'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color13: '.*'/color13: '$color13'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color14: '.*'/color14: '$color14'/g" "$ALACRITTY_CONFIG_PATH"
+sed -i "s/color15: '.*'/color15: '$color15'/g" "$ALACRITTY_CONFIG_PATH"
+
+# Refresh Alacritty configuration
+killall -USR1 alacritty

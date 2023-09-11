@@ -1,0 +1,8 @@
+#!/bin/bash
+VIDEO_LINK=$(xclip -selection clipboard -o)
+
+if [[ -n "$VIDEO_LINK" ]]; then
+    mpv --ytdl-format=best "$VIDEO_LINK"
+else
+    echo "No video link found in clipboard."
+fi

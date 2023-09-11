@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Search for a file in the home directory using fzf
+file=$(find "$HOME" -type f | fzf --preview "bat --style=numbers --color=always {}" --preview-window=up:50%:wrap)
+
+# Check if a file was selected
+if [[ -n "$file" ]]; then
+    # Copy the file content to the clipboard using xclip
+    xclip -selection clipboard < "$file"
+    echo "File content copied to clipboard: $file"
+else
+    echo "No file selected."
+fi
+

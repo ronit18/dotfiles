@@ -1,0 +1,13 @@
+#!/bin/sh
+
+xmodmap ~/.Xmodmap &
+nm-applet &
+dunst &
+wal -R 
+picom --config ~/.config/picom/picom.conf &
+/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+lxsession &
+dwmblocks &
+redshift-gtk &
+xset r rate 300 50 &
+exec dwm > /dev/null 2>&1

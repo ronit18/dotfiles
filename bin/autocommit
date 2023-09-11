@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+    echo "Error: Please provide a number as a parameter."
+    exit 1
+fi
+
+number=$1
+sr=0
+project_dir="$HOME/auto-commit"
+
+for i in $(seq 1 $number)
+do
+    ts=$(date +%s)
+
+    echo "$sr-$ts" >> $project_dir/main.txt
+    git -C $project_dir add .
+    git -C $project_dir commit -m "auto commit - $ts"
+    git -C $project_dir push origin main
+    sr=$((sr + 1))
+done
+

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Function to calculate duration using ffprobe
+get_duration() {
+    duration=$(ffprobe -i "$1" -show_entries format=duration -v quiet -of csv="p=0")
+    echo "$duration"
+}
+
+# Function to calculate duration at 1.46x speed
+get_adjusted_duration() {
+    local original_duration=$1
+    local adjusted_duration=$(bc <<< "scale=3; $original_duration / 1.46")
+    echo "$adjusted_duration"
+}
+
+# Function to convert seconds to hours and minutes
+convert_duration() {
+    local seconds=$1
+    local hours=$(bc <<< "scale=0; $seconds / 3600")
+    local minutes=$(bc <<< "scale=0; ($seconds % 3600) / 60")
+    printf "%02d:%02d" "$hours" "$minutes"
+}
+
+# Recursive function to search for videos
+search_videos() {
+    for file in "$1"/*; do
+        if [[ -d "$file" ]]; then
+            search_videos "$file" # Recursive call for subdirectories
+        elif [[ -f "$file" ]]; then
+            extension="${file##*.}"
+            if [[ "$extension" =~ ^(webm|mp4)$ ]]; then
+                duration=$(get_duration "$file")
+                total_duration=$(bc <<< "scale=3; $total_duration + $duration")
+                echo "Video: $file | Duration: $duration seconds"
+            fi
+        fi
+    done
+}
+
+# Main script
+total_duration=0
+search_videos "$(pwd)"
+formatted_duration=$(convert_duration "$total_duration")
+adjusted_duration=$(get_adjusted_duration "$total_duration")
+formatted_adjusted_duration=$(convert_duration "$adjusted_duration")
+
+# Color codes
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Output formatting
+printf "\n"
+printf "%s\n" "####################################################################################"
+printf "${GREEN}%s${NC}\n" " Total Duration of Videos: $formatted_duration hours"
+printf "${GREEN}%s${NC}\n" " Adjusted Duration at 1.46x speed: $formatted_adjusted_duration hours"
+printf "%s\n" "####################################################################################"
+printf "\n"
